@@ -1,3 +1,4 @@
+import { useState } from 'react/cjs/react.development';
 import './App.css';
 import './react-components/CalculatorButton.js';
 import CalculatorButton from './react-components/CalculatorButton.js';
@@ -24,13 +25,25 @@ function App() {
     { textToShow: "9", buttonId: "nine" }
   ];
 
-  // generate JSX for all buttons. 17 total
+  // State for the calculator 
+  let [CalculatorState, setCalculatorState] = useState(
+    {
+      display: "0"
+    }
+  );
+
+  // generate JSX for all buttons from buttonsData. 17 total
   let renderButtons = buttonsData.map(item => ( <CalculatorButton showText={item.textToShow} idButton={item.buttonId} /> ));
 
   return (
     <div className="App">
       <header className="App-header">
-      {renderButtons}
+        <div className="buttonsContainer">
+          <div id="display">
+            {CalculatorState.display}
+          </div>
+          {renderButtons}
+        </div>
       </header>
     </div>
   );
