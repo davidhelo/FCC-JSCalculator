@@ -32,8 +32,12 @@ function App() {
     }
   );
 
+  function handleClickButton(buttonClicked) {
+    setCalculatorState({display: buttonClicked});
+  }
+
   // generate JSX for all buttons from buttonsData. 17 total
-  let renderButtons = buttonsData.map(item => ( <CalculatorButton showText={item.textToShow} idButton={item.buttonId} /> ));
+  let renderButtons = buttonsData.map(item => ( <CalculatorButton showText={item.textToShow} idButton={item.buttonId} clickOnButton={handleClickButton} /> ));
 
   return (
     <div className="App">
