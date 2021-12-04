@@ -33,6 +33,9 @@ function App() {
   );
 
   function handleClickButton(buttonClicked) {
+    // ************************************************** HANDLE THE CLICK continue
+    // it receives the idButton from the CalculatorButton component. verify if its more convenient to receive the text of the number instead ("1" instead of "one").
+    // for now it only prints the id in th edisplay
     setCalculatorState({display: buttonClicked});
   }
 
