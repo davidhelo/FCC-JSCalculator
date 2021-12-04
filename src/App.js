@@ -8,7 +8,7 @@ function App() {
   let buttonsData = [
     { textToShow: "=", buttonId: "equals" },
     { textToShow: "/", buttonId: "divide" },
-    { textToShow: "X", buttonId: "multiply" },
+    { textToShow: "*", buttonId: "multiply" },
     { textToShow: "-", buttonId: "substract" },
     { textToShow: "+", buttonId: "add" },
     { textToShow: "C", buttonId: "clear" },
@@ -34,10 +34,34 @@ function App() {
 
   function handleClickButton(buttonClicked) {
     // ************************************************** HANDLE THE CLICK continue
-    // it receives the idButton from the CalculatorButton component. verify if its more convenient to receive the text of the number instead ("1" instead of "one").
-    // for now it only prints the id in th edisplay
-    setCalculatorState({display: buttonClicked});
-  }
+    // it receives the showText prop from button ("1", "2", "3", etc... "+", "-", "*", "/", "C") from the CalculatorButton component. 
+    /* for now it print the string considering the restrictions:
+        - no multiple ceros or any cero to the left.
+        - No multiple dot decimals ('.')
+        - No two operations symbols together.
+          (CONSIDER THAT - (MINUS for negative numbers) CAN BE LEGAL ONE TIME, example: 2*-3 = -6, but not 2*--3 or 2-* or 2+-3, so can be 2*-3 or 4/-2)
+    */
+    let regex0to9 = /[0-9]/;
+    let regexOperations = /[-+*\/]/;
+    let lastCharacterInDisplay = CalculatorState.display[CalculatorState.display.length-1];
+    
+    if (buttonClicked === "C") {
+      setCalculatorState({ display: "0" });
+    } else if (CalculatorState.display === "0" && regex0to9.test(buttonClicked)) {
+        setCalculatorState({ display: buttonClicked });
+      } else if (buttonClicked === '.' && !/\./.test(CalculatorState.display)) {
+          setCalculatorState({ display: CalculatorState.display + buttonClicked });
+        } else if (buttonClicked === '=') {
+            setCalculatorState({ display: (eval(CalculatorState.display)) });
+          } else if (buttonClicked === '-' && lastCharacterInDisplay !== '-' && lastCharacterInDisplay !== '+') {
+              setCalculatorState({ display: CalculatorState.display + buttonClicked });
+            } else if (regex0to9.test(buttonClicked) || (regexOperations.test(buttonClicked) && !regexOperations.test(lastCharacterInDisplay))) { 
+                setCalculatorState({ display: CalculatorState.display + buttonClicked });
+              } else if (regexOperations.test(lastCharacterInDisplay)) {
+                  let charsToRemove = regexOperations.test(CalculatorState.display[CalculatorState.display.length-2]) ? 2 : 1;
+                  setCalculatorState({ display: CalculatorState.display.slice(0, -1*charsToRemove) + buttonClicked });
+                } 
+}
 
   // generate JSX for all buttons from buttonsData. 17 total
   let renderButtons = buttonsData.map(item => ( <CalculatorButton showText={item.textToShow} idButton={item.buttonId} clickOnButton={handleClickButton} /> ));
