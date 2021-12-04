@@ -33,6 +33,7 @@ function App() {
   );
 
   function handleClickButton(buttonClicked) {
+    // the calculator is fully functional. missing CSS to arrange components.
     // it receives the showText prop from button ("1", "2", "3", etc... "+", "-", "*", "/", "C") from the CalculatorButton component. 
     /* for now it print the string considering the restrictions:
         - no multiple ceros or any cero to the left.
