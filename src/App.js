@@ -34,6 +34,7 @@ function App() {
 
   function handleClickButton(buttonClicked) {
     // the calculator is fully functional. missing CSS to arrange components.
+    // check this for grid arrange
     // it receives the showText prop from button ("1", "2", "3", etc... "+", "-", "*", "/", "C") from the CalculatorButton component. 
     /* for now it print the string considering the restrictions:
         - no multiple ceros or any cero to the left.
@@ -47,7 +48,7 @@ function App() {
     // the if conditions can be written clearer.
     if (buttonClicked === "C") {
       setCalculatorState({ display: "0" }); // clear screen
-    } else if (CalculatorState.display === "0" && regex0to9.test(buttonClicked)) {
+    } else if (CalculatorState.display == "0" && regex0to9.test(buttonClicked)) {
         setCalculatorState({ display: buttonClicked }); // remove zeros from the left
       } else if (buttonClicked === '.' && !/\./.test(CalculatorState.display)) {
           setCalculatorState({ display: CalculatorState.display + buttonClicked }); // verify if there is a dot already in the screen, if not add it at the end
