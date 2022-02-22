@@ -43,17 +43,21 @@ function App() {
           (CONSIDER THAT - (MINUS for negative numbers) CAN BE LEGAL ONE TIME, example: 2*-3 = -6, but not 2*--3 or 2-* or 2+-3, so can be 2*-3 or 4/-2)
     */
     let regex0to9 = /[0-9]/;
-    let regexOperations = /[-+*\/]/;
+    let regexOperations = /[-+*/]/;
     let lastCharacterInDisplay = CalculatorState.display[CalculatorState.display.length-1];
     // the if conditions can be written clearer.
     if (buttonClicked === "C") {
       setCalculatorState({ display: "0" }); // clear screen
     } else if (CalculatorState.display == "0" && regex0to9.test(buttonClicked)) {
         setCalculatorState({ display: buttonClicked }); // remove zeros from the left
-      } else if (buttonClicked === '.' && !/\./.test(CalculatorState.display)) {
-          setCalculatorState({ display: CalculatorState.display + buttonClicked }); // verify if there is a dot already in the screen, if not add it at the end
+      } else if (buttonClicked === '.' && !/\./.test(CalculatorState.display.match(/[-+*\/]?[0-9\.]*$/))) { 
+        // the match function with a regex to only consider the last number from the last operator and forward. this mean, 1.1+2 will verify if there is a dot in the last string from + operator: "+2"
+        
+          setCalculatorState({ display: CalculatorState.display + buttonClicked }); 
         } else if (buttonClicked === '=') {
-            setCalculatorState({ display: (eval(CalculatorState.display)) }); // equals eval the string expresion to show the result on the screen
+            // the next line is when equals is pressed it evals the string expresion to show the result on the screen
+            // The condisition inside eval verify if the last character in the screen is not an expresion to avoid errors in the function eval. example: '2+3+' will produce and error.
+            setCalculatorState({ display: eval(regexOperations.test(lastCharacterInDisplay) ? CalculatorState.display.slice(0, -1) : CalculatorState.display).toString() });
           } else if (buttonClicked === '-' && lastCharacterInDisplay !== '-' && lastCharacterInDisplay !== '+') { // verification for the negative number 
               setCalculatorState({ display: CalculatorState.display + buttonClicked }); 
             } else if (regex0to9.test(buttonClicked) || (regexOperations.test(buttonClicked) && !regexOperations.test(lastCharacterInDisplay))) { 
