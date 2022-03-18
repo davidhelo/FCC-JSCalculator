@@ -81,6 +81,7 @@ function App() {
           {renderButtons}
         </div>
       </header>
+      <footer>By do.helo</footer>
     </div>
   );
 }
